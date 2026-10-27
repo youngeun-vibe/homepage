@@ -306,6 +306,22 @@ button { font: inherit; cursor: pointer; border: 0; background: none; }
 .partners { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
 .partners span { padding: 12px 22px; border: 1px solid var(--c-line); border-radius: 10px; color: var(--c-muted); font-weight: 600; background: #fff; }
 
+/* 관리자 페이지에서 올린 이미지·파일 */
+.news-card .thumb { overflow: hidden; }
+.news-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.article-img { width: 100%; border-radius: var(--radius); margin-bottom: 30px; }
+.article-body img { border-radius: 10px; margin: 1em 0; }
+.article-body h2, .article-body h3 { margin: 1.4em 0 0.6em; }
+.article-body ul, .article-body ol { margin: 0 0 1em 1.4em; list-style: revert; }
+.article-body a, .file-link, .attach a { color: var(--c-primary); text-decoration: underline; }
+.attach { margin-top: 30px; padding: 16px 20px; background: var(--c-bg-soft); border-radius: 10px; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+.member-logo img { max-height: 60px; max-width: 80%; object-fit: contain; }
+.partners a { padding: 12px 22px; border: 1px solid var(--c-line); border-radius: 10px; color: var(--c-muted); font-weight: 600; background: #fff; }
+.partners a:hover { color: var(--c-primary); border-color: var(--c-primary); }
+.greeting .body p { margin-bottom: 1.1em; color: #3a4060; }
+.load-error { max-width: var(--container); margin: 20px auto; padding: 14px 20px; background: #fdecec; color: #b42318; border-radius: 10px; }
+
 /* ---------- Footer ---------- */
 .site-footer { background: var(--c-navy); color: #c3c7e0; padding: 50px 0 40px; font-size: 0.9rem; }
 .site-footer .top { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; padding-bottom: 26px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 26px; }

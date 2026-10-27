@@ -29,13 +29,13 @@
             <span class="label">Overview</span>
             <h2>협회개요</h2>
           </div>
-          <p style="margin-bottom:24px;color:#34424d">사단법인 제주바이오기업협회는 제주의 청정 생물자원을 기반으로 화장품, 식품·건강기능식품, 의약·바이오소재 등 다양한 분야에서 활동하는 도내 바이오기업들이 모여 설립한 비영리 사단법인입니다. 회원사 간 협력과 정보 공유, 정책 건의, 공동 마케팅을 통해 제주 바이오산업의 경쟁력을 높이고 지역 경제 발전에 기여하고자 합니다.</p>
+          <p id="about-intro" style="margin-bottom:24px;color:#3a4060"></p>
           <table class="info-table">
             <tr><th>법인명</th><td data-site="name">사단법인 제주바이오기업협회</td></tr>
-            <tr><th>영문명</th><td data-site="nameEn">Jeju Bio Business Association</td></tr>
+            <tr><th>영문명</th><td data-site="nameEn">Jeju Bio Industry Association</td></tr>
             <tr><th>설립</th><td data-site="founded">[설립연도]</td></tr>
             <tr><th>회장</th><td data-site="president">[회장 성명]</td></tr>
-            <tr><th>회원사</th><td><span data-member-count>0</span>개사</td></tr>
+            <tr><th>회원사</th><td><span id="member-total"></span>개사</td></tr>
             <tr><th>소재지</th><td data-site="address">[주소]</td></tr>
           </table>
         </div>
@@ -51,14 +51,9 @@
         </div>
         <div class="vision">
           <small>VISION</small>
-          <h3>청정 제주 자원 기반, 글로벌 바이오산업 거점으로</h3>
+          <h3 id="vision-text"></h3>
         </div>
-        <div class="grid grid-4">
-          <div class="card"><div class="icon">🤝</div><h3>상생 협력</h3><p>회원사 간 협력 네트워크 강화와 공동 사업 발굴</p></div>
-          <div class="card"><div class="icon">🚀</div><h3>기업 성장</h3><p>판로 개척, 투자 유치, 기술 사업화 지원</p></div>
-          <div class="card"><div class="icon">🧑‍🔬</div><h3>인재 양성</h3><p>현장 맞춤형 교육과 지역 인재 채용 연계</p></div>
-          <div class="card"><div class="icon">🏛️</div><h3>정책 제안</h3><p>업계 의견 수렴과 제도 개선 건의</p></div>
-        </div>
+        <div class="grid grid-4" id="goals"></div>
       </div>
     </section>
 
@@ -67,14 +62,8 @@
         <div class="section-head">
           <span class="label">History</span>
           <h2>연혁</h2>
-          <p>※ 실제 연혁으로 교체해 주세요.</p>
-        </div>
-        <ul class="timeline">
-          <li><div class="year">[2026]</div><div class="desc">[협회 홈페이지 개설]<br>[해외 판로개척 지원사업 수행]</div></li>
-          <li><div class="year">[2025]</div><div class="desc">[유관기관 업무협약(MOU) 체결]</div></li>
-          <li><div class="year">[0000]</div><div class="desc">[사단법인 설립 허가]</div></li>
-          <li><div class="year">[0000]</div><div class="desc">[창립총회 개최 및 초대 회장 선출]</div></li>
-        </ul>
+                  </div>
+        <ul class="timeline" id="history-list"></ul>
       </div>
     </section>
 
@@ -97,11 +86,7 @@
           <div class="org-line"></div>
           <div class="org-node">사무국<small>사무국장</small></div>
           <div class="org-line"></div>
-          <div class="org-row">
-            <div class="org-node">기획·운영<small>[분과/팀]</small></div>
-            <div class="org-node">회원·사업지원<small>[분과/팀]</small></div>
-            <div class="org-node">대외협력<small>[분과/팀]</small></div>
-          </div>
+          <div class="org-row" id="org-units"></div>
         </div>
       </div>
     </section>
@@ -124,7 +109,6 @@
   </main>
 
   <footer id="site-footer"></footer>
-  <script src="assets/js/data.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

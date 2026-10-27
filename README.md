@@ -1,33 +1,49 @@
 # 사단법인 제주바이오기업협회 홈페이지
 
-별도 빌드 없이 동작하는 정적 웹사이트입니다. `index.html`을 브라우저로 열거나 GitHub Pages 등 정적 호스팅에 그대로 올리면 됩니다.
+별도 빌드 없이 동작하는 정적 웹사이트입니다. GitHub Pages로 무료 호스팅하고, `/admin` 관리자 페이지(Sveltia CMS)에서 내용을 수정합니다.
 
-## 페이지 구성
+- **사무국 직원용 사용법·배포·도메인 연결: [ADMIN_GUIDE.md](ADMIN_GUIDE.md)**
 
-| 메뉴 | 파일 | 내용 |
+## 구조
+
+```
+index.html, about.html, ...   페이지 틀 (HTML)
+content/*.json                페이지 내용 — 관리자 페이지가 수정하는 파일
+admin/                        관리자 페이지 (index.html, config.yml)
+assets/css/style.css          디자인 (맨 위 :root 에 로고 색상 팔레트)
+assets/js/main.js             메뉴·푸터 및 content/*.json → 화면 렌더링
+assets/img/                   로고 등 고정 이미지
+assets/uploads/               관리자 페이지에서 올린 사진·파일
+assets/vendor/marked.umd.js   본문(마크다운) 변환 라이브러리
+```
+
+| 메뉴 | 파일 | 내용 파일 |
 | --- | --- | --- |
-| 메인 | `index.html` | 소개, 바로가기, 주요사업 요약, 최신 소식, 협력기관 |
-| 협회소개 | `about.html` | 협회개요 · 비전·목표 · 연혁 · 조직도 · 오시는 길 |
-| 회장인사 | `greeting.html` | 회장 인사말 |
-| 주요사업 | `business.html` | 협회 사업 소개 |
-| 소식 | `news.html`, `news-view.html` | 공지사항 · 행사·교육 · 지원사업 · 언론보도 (분류별 보기) |
-| 회원사 | `members.html` | 회원사 목록 (분야별 필터, 검색) |
-| 회원가입 안내 | `join.html` | 가입 대상·혜택·절차·회비, 문의하기 양식 |
-| 개인정보처리방침 | `privacy.html` | 문의 양식 운영 시 필요한 기본 양식 |
+| 메인 | `index.html` | `home.json`, `news.json`, `members.json` |
+| 협회소개 | `about.html` | `about.json` (+ `site.json`) |
+| 회장인사 | `greeting.html` | `greeting.json` |
+| 주요사업 | `business.html` | `business.json` |
+| 소식 | `news.html`, `news-view.html` | `news.json` |
+| 회원사 소개 | `members.html` | `members.json` |
+| 회원가입 안내·문의 | `join.html` | `join.json` |
+| 개인정보처리방침 | `privacy.html` | (HTML 직접 수정) |
 
-## 내용 수정 방법
+모든 페이지 하단의 기관 정보는 `content/site.json` 에서 옵니다.
 
-- **기관 정보·소식·회원사**: `assets/js/data.js` 한 곳만 수정하면 모든 페이지에 반영됩니다.
-  - `SITE`: 회장명, 설립연도, 주소, 연락처, 지도 주소(`mapEmbedUrl`)
-  - `NEWS`: 소식 글 추가 (`id`는 겹치지 않게, `category`는 notice/event/support/press)
-  - `MEMBERS`: 회원사 추가 (`logo`에 이미지 경로를 넣으면 로고 표시)
-- **문구**: 회장 인사말, 연혁, 조직도, 주요사업은 각 HTML 파일에서 직접 수정합니다.
-- **이미지**: `assets/img/`에 넣고 경로를 지정합니다. (예: 회장 사진 `assets/img/president.jpg`)
-- **로고**: `assets/img/logo.jpg`. 고해상도 원본(SVG 또는 배경 투명 PNG)으로 교체하면 고해상도 화면에서도 선명하게 보입니다.
-- **색상**: `assets/css/style.css` 맨 위 `:root`에서 로고 색상(남색·파랑·하늘색·연두) 기반 팔레트를 관리합니다.
-- `[ ]`로 표시된 부분은 실제 정보로 교체가 필요한 자리입니다.
+## 로컬에서 보기
 
-## 참고
+콘텐츠를 `fetch` 로 불러오므로 파일을 직접 열지 말고 간단한 웹 서버로 엽니다.
 
-- 문의하기 양식은 현재 방문자의 메일 앱을 여는 방식입니다. 서버로 바로 접수하려면 Formspree, Google Forms 등 외부 폼 서비스나 백엔드 연동이 필요합니다.
-- 공통 메뉴와 푸터는 `assets/js/main.js`에서 관리합니다.
+```bash
+python3 -m http.server 8000
+# http://localhost:8000
+```
+
+## 수정할 때 주의
+
+- 소식 분류를 바꾸려면 `assets/js/main.js` 의 `NEWS_CATEGORIES` 와 `admin/config.yml` 의 소식 `category` 옵션을 함께 바꿉니다.
+- 회원사 분야는 `admin/config.yml` 의 회원사 `category` 옵션에서 관리합니다.
+- 소식의 `id` 는 관리자 페이지가 자동으로 만드는 값(12자리)이며, 글 주소(`news-view.html?id=...`)에 쓰이므로 바꾸지 않습니다.
+- 관리자 페이지 라이브러리 버전은 `admin/index.html` 의 `@sveltia/cms@버전` 에서 고정합니다.
+- 로고 `assets/img/logo.jpg` 는 고해상도 원본(SVG 또는 배경 투명 PNG)으로 교체하면 더 선명합니다.
+- 문의하기 양식은 방문자의 메일 앱을 여는 방식입니다. 서버 접수가 필요하면 외부 폼 서비스 연동이 필요합니다.
