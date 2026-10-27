@@ -86,13 +86,16 @@ create table if not exists public.members (
 -- ---------------------------------------------------------
 -- 5. 권한: 누구나 읽기, 관리자만 쓰기
 -- ---------------------------------------------------------
+alter table public.pages enable row level security;
+alter table public.news enable row level security;
+alter table public.members enable row level security;
+
 do $$
 declare t text;
 begin
   foreach t in array array['pages', 'news', 'members'] loop
     execute format('drop trigger if exists set_updated_at on public.%I', t);
     execute format('create trigger set_updated_at before update on public.%I for each row execute function public.set_updated_at()', t);
-    execute format('alter table public.%I enable row level security', t);
     execute format('grant select on public.%I to anon, authenticated', t);
     execute format('grant insert, update, delete on public.%I to authenticated', t);
     execute format('drop policy if exists "누구나 읽기" on public.%I', t);
