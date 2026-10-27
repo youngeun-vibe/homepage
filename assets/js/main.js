@@ -1,17 +1,13 @@
 /* =========================================================
    공통 레이아웃(헤더·푸터) 및 페이지별 렌더링
-   - 콘텐츠는 content/*.json 에서 불러옵니다. (관리자 페이지 /admin 에서 수정)
+   - 콘텐츠는 Supabase 에서 불러옵니다. (관리자 페이지 /admin 에서 수정)
+   - 연결 정보와 분류는 assets/js/config.js
    ========================================================= */
 (function () {
   "use strict";
 
-  // 분류를 바꾸면 admin/config.yml 의 소식 분류(select options)도 같이 바꿔 주세요.
-  var NEWS_CATEGORIES = {
-    notice: "공지사항",
-    event: "행사·교육",
-    support: "지원사업",
-    press: "언론보도"
-  };
+  var CONFIG = window.SITE_CONFIG;
+  var NEWS_CATEGORIES = CONFIG.NEWS_CATEGORIES;
 
   var MENU = [
     {
@@ -57,22 +53,32 @@
   // 줄바꿈을 <br>로 (제목 등 짧은 문구용)
   function escBr(str) { return esc(str).replace(/\n/g, "<br>"); }
   // 마크다운 → HTML (관리자 페이지에서 작성한 본문)
-  function md(str) {
-    var html = window.marked ? window.marked.parse(str || "") : "<p>" + escBr(str) + "</p>";
-    return html.replace(/(src|href)="\/assets\//g, '$1="assets/');
-  }
-  // javascript: 같은 위험한 주소 차단. 관리자 페이지가 저장하는 "/assets/..." 는
-  // 상대경로로 바꿔 도메인 연결 전(github.io/저장소명/)에도 보이게 함
-  function safeUrl(u) {
-    if (!u || /^\s*(javascript|data|vbscript):/i.test(u)) return "";
-    return u.replace(/^\/(?!\/)/, "");
+  // breaks: 관리자 편집기에서 Enter 로 바꾼 줄이 홈페이지에서도 바뀌도록
+  function md(str) { return window.marked ? window.marked.parse(str || "", { breaks: true }) : "<p>" + escBr(str) + "</p>"; }
+  // javascript: 같은 위험한 주소 차단
+  function safeUrl(u) { return u && !/^\s*(javascript|data|vbscript):/i.test(u) ? u : ""; }
+  // 첨부파일 이름: 관리자 페이지가 주소 끝에 ?download=원래이름 을 붙여 저장
+  function fileName(u) {
+    var m = /[?&]download=([^&]+)/.exec(u);
+    return m ? decodeURIComponent(m[1]) : u.split("?")[0].split("/").pop();
   }
 
+  /* ---------- Supabase 에서 내용 읽기 (공개 읽기 전용) ---------- */
+  var QUERIES = {
+    news: "news?select=id,title,category,date,thumbnail,attachment,body&order=date.desc,created_at.desc",
+    members: "members?select=name,category,description,logo,url&order=sort_order.asc,created_at.asc"
+  };
   function load(name) {
-    return fetch("content/" + name + ".json", { cache: "no-cache" }).then(function (r) {
-      if (!r.ok) throw new Error(name + ".json 을 불러오지 못했습니다.");
-      return r.json();
-    });
+    var path = QUERIES[name] || "pages?select=data&key=eq." + name;
+    return fetch(CONFIG.SUPABASE_URL + "/rest/v1/" + path, { headers: { apikey: CONFIG.SUPABASE_KEY } })
+      .then(function (r) {
+        if (!r.ok) throw new Error(name + " 내용을 불러오지 못했습니다. (" + r.status + ")");
+        return r.json();
+      })
+      .then(function (rows) {
+        if (name === "members") return rows.map(function (m) { m.desc = m.description; return m; });
+        return QUERIES[name] ? rows : (rows[0] ? rows[0].data : {});
+      });
   }
 
   /* ---------- Header ---------- */
@@ -204,7 +210,7 @@
     }
     document.title = n.title + " | " + S.name;
     var attach = n.attachment
-      ? '<p class="attach">📎 <a href="' + esc(safeUrl(n.attachment)) + '" download>첨부파일 내려받기 (' + esc(n.attachment.split("/").pop()) + ")</a></p>"
+      ? '<p class="attach">📎 <a href="' + esc(safeUrl(n.attachment)) + '" download>첨부파일 내려받기 (' + esc(fileName(n.attachment)) + ")</a></p>"
       : "";
     el.innerHTML =
       '<div class="article-head">' + badge(n.category) + "<h2>" + esc(n.title) + '</h2><p class="meta">' + esc(n.date) + " · " + esc(S.name) + "</p></div>" +

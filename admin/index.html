@@ -3,11 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex">
+  <meta name="robots" content="noindex, nofollow">
   <title>관리자 | 사단법인 제주바이오기업협회</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="/admin/vendor/toastui-editor.css">
+  <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
-  <!-- Sveltia CMS: 설정은 같은 폴더의 config.yml -->
-  <script src="https://unpkg.com/@sveltia/cms@0.233.0/dist/sveltia-cms.js"></script>
+  <!-- 로그인 -->
+  <section class="auth" id="view-login" hidden>
+    <form class="auth-box" id="login-form">
+      <img src="/assets/img/logo.jpg" alt="사단법인 제주바이오기업협회">
+      <h1>홈페이지 관리자</h1>
+      <label>이메일<input type="email" name="email" autocomplete="username" required></label>
+      <label>비밀번호<input type="password" name="password" autocomplete="current-password" required></label>
+      <p class="auth-msg" id="login-msg"></p>
+      <button class="btn btn-primary" type="submit">로그인</button>
+      <button class="link" type="button" id="forgot-btn">비밀번호를 잊으셨나요?</button>
+    </form>
+  </section>
+
+  <!-- 비밀번호 새로 정하기 (재설정 메일의 링크로 들어왔을 때) -->
+  <section class="auth" id="view-recovery" hidden>
+    <form class="auth-box" id="recovery-form">
+      <h1>새 비밀번호 설정</h1>
+      <label>새 비밀번호 (8자 이상)<input type="password" name="password" minlength="8" autocomplete="new-password" required></label>
+      <label>새 비밀번호 확인<input type="password" name="password2" minlength="8" autocomplete="new-password" required></label>
+      <p class="auth-msg" id="recovery-msg"></p>
+      <button class="btn btn-primary" type="submit">비밀번호 저장</button>
+    </form>
+  </section>
+
+  <!-- 관리 화면 -->
+  <div class="app" id="view-app" hidden>
+    <aside class="side">
+      <a class="side-logo" href="/admin/"><img src="/assets/img/logo.jpg" alt="사단법인 제주바이오기업협회"><span>관리자</span></a>
+      <nav id="side-nav"></nav>
+      <div class="side-foot">
+        <span id="user-email"></span>
+        <a href="/" target="_blank" rel="noopener">홈페이지 보기 ↗</a>
+        <button class="link" id="logout-btn" type="button">로그아웃</button>
+      </div>
+    </aside>
+    <main class="main" id="main"></main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/assets/js/config.js"></script>
+  <script src="/admin/vendor/supabase.js"></script>
+  <script src="/admin/vendor/toastui-editor.js"></script>
+  <script src="/admin/admin.js"></script>
 </body>
 </html>
