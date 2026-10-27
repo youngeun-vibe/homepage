@@ -6,8 +6,8 @@
 
 window.SITE = {
   name: "사단법인 제주바이오기업협회",
-  nameEn: "Jeju Bio Industry Association",
-  shortName: "JBIA",
+  nameEn: "Jeju Bio Business Association",
+  shortName: "JBA",
   president: "[회장 성명]",
   founded: "[설립연도]",
   address: "[제주특별자치도 제주시 ○○로 ○○, ○층]",

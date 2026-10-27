@@ -45,8 +45,11 @@
   }
 
   function logoHTML() {
-    return '<a class="logo" href="index.html"><span class="logo-mark">' + esc(S.shortName) +
-      '</span><span>' + esc(S.name.replace("사단법인 ", "")) + '<small>' + esc(S.nameEn) + '</small></span></a>';
+    return '<a class="logo" href="index.html"><img src="assets/img/logo.jpg" alt="' + esc(S.name) + '"></a>';
+  }
+
+  function footerLogoHTML() {
+    return '<a class="logo" href="index.html"><span>' + esc(S.name) + '<small>' + esc(S.nameEn) + '</small></span></a>';
   }
 
   /* ---------- Header ---------- */
@@ -88,7 +91,7 @@
     el.className = "site-footer";
     el.innerHTML =
       '<div class="container">' +
-      '<div class="top">' + logoHTML() +
+      '<div class="top">' + footerLogoHTML() +
       '<div class="footer-links"><a href="about.html">협회소개</a><a href="news.html">소식</a>' +
       '<a href="members.html">회원사</a><a href="join.html">회원가입 안내</a><a href="join.html#contact">문의하기</a>' +
       '<a href="privacy.html"><strong>개인정보처리방침</strong></a></div></div>' +
@@ -110,10 +113,10 @@
   /* ---------- 소식 ---------- */
   var ICONS = { notice: "📢", event: "🎤", support: "🤝", press: "📰" };
   var COLORS = {
-    notice: "linear-gradient(135deg,#0b6e8a,#2a8fae)",
-    event: "linear-gradient(135deg,#f28c28,#f6b26b)",
-    support: "linear-gradient(135deg,#6a4bb3,#9a7fd6)",
-    press: "linear-gradient(135deg,#2f9e6e,#5cc193)"
+    notice: "linear-gradient(135deg,#0068a8,#2f8fd0)",
+    event: "linear-gradient(135deg,#74a82a,#a6d45e)",
+    support: "linear-gradient(135deg,#0a8fc4,#4cc6f0)",
+    press: "linear-gradient(135deg,#101868,#3a46a0)"
   };
 
   function newsCard(n) {
